@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package seat;
+// 중요: go_package 경로를 모듈 이름과 일치시킴
+option go_package = "github.com/Joseng8908/image-preprocessor/api/gen/seat";
+
+service SeatAnalyzer {
+  rpc AnalyzeFrame (FrameRequest) returns (FrameResponse);
+}
+
+message FrameRequest {
+  string device_id = 1;
+  bytes image_payload = 2;
+  int64 timestamp = 3;
+}
+
+message FrameResponse {
+  bool success = 1;
+  string message = 2;
+}
