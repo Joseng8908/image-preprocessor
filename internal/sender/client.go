@@ -6,7 +6,6 @@ import (
 	"context"
 	"time"
 
-	seat "github.com/Joseng8908/image-preprocessor/api/gen"
 	"github.com/Joseng8908/image-preprocessor/api/gen/seat"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc"
@@ -15,7 +14,7 @@ import (
 // 기본 정보들
 // grpc 통신에 필요한 연결 정보를 가지는 데이터
 type GrpcSender struct {
-	client seat.NewSeatAnalyzerClient
+	client seat.SeatAnalyzerClient
 	conn *grpc.ClientConn
 }
 
@@ -51,5 +50,11 @@ func (s *GrpcSender) Send(image []byte, id string) error{
 	})
 	return err
 	
+}
+
+func (s *GrpcSender) Close() {
+	if s.conn != nil {
+		s.conn.Close()
+	}
 }
 
