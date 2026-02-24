@@ -5,6 +5,7 @@ go 1.24.0
 replace github.com/Joseng8908/image-preprocessor => ./
 
 require (
+	gocv.io/x/gocv v0.43.0
 	google.golang.org/grpc v1.79.1
 	google.golang.org/protobuf v1.36.11
 )

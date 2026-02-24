@@ -4,6 +4,7 @@ import(
 	"log"
 	"time"
 	"github.com/Joseng8908/image-preprocessor/internal/sender"
+	"github.com/Joseng8908/image-preprocessor/internal/capture"
 )
 
 func main() {
@@ -16,17 +17,27 @@ func main() {
 	}
 	defer client.Close() // 프로그램 종료 시 연결 닫는 것 보장
 	 
+
+	// 영상 스캐너 생성(프로젝트 루트에 .mp4파일이 있어야 함)
+	scanner, err := capture.NewVideoScanner("test.mp4")
+	if err != nil {
+		log.Fatalf("스캐너 초기화 실패: %v", err)
+	}
+	defer scanner.Close()
+
+
 	log.Println("에이전트 가동 시작...")
 
 	for {
-		// 캡처 로직 자리
-		// 지금은 이시 텍스트를 이미지 바이너리인 척 해서 보내기
-		// 아직 캡처 로직 안만듦
-		// TODO: 캡처 로직 만들고 부착
-		dummyImage := []byte("fake_image_binary_data")
+		// 프레임 추출
+		frame, err := scanner.GrabFrame()
+		if err != nil {
+			log.Printf("영상 읽기 중단: %v", err)
+			break // 영상 끝나면 for문 종료
+		}
 
-		// 서버로 전송 시도
-		err := client.Send(dummyImage, "classroom-A")
+	
+		err = client.Send(frame, "sangsang-01")
 		if err != nil {
 			log.Printf("전송 에러: %v", err)
 		} else {
